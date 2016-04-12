@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/degradado1"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".controller.ReservacionesActivity">
+
+    <RelativeLayout
+        android:id="@+id/pb_Reserv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="15sp"
+        android:layout_weight="5"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:weightSum="1">
+
+        <ProgressBar
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/lly_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="100"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="30"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="20"
+                    android:text="@string/select_date"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <DatePicker
+                    android:id="@+id/event_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="80"
+                    android:calendarTextColor="@color/colorPrimaryDark"
+                    android:endYear="2100"
+                    android:startYear="2000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="10"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginLeft="20sp"
+                    android:layout_weight="50"
+                    android:background="@drawable/degradado1"
+                    android:onClick="ConsultaDisponibilidad"
+                    android:text="Consultar Disponibilidad"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/edt_disponibilidad"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:layout_weight="50"
+                    android:background="@color/colorPrimary"
+                    android:padding="12sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lly_articulos"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_marginTop="30sp"
+            android:layout_weight="100"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="30"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="30"
+                    android:text="Mesas: "
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="30"
+                    android:gravity="top"
+                    android:hint="Cantidad"
+                    android:inputType="number"
+                    android:textColorHint="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="50"
+                    android:text="Cada mesa incluye 10 sillas"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="30"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="30"
+                    android:text="Mantelería: "
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0sp"
+                        android:layout_weight="10"
+                        android:text="Manteles"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="0sp"
+                        android:layout_weight="60"
+                        android:text="Faldones"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="0sp"
+                        android:layout_weight="50"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="40"
+                            android:text="Moños"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <Spinner
+                            android:layout_width="0sp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50sp"
+                            android:layout_weight="20"
+                            android:entries="@array/colores" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="30"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="30"
+                    android:text="Descripción del evento: "
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="70"
+                    android:gravity="top"
+                    android:hint="¿De qué es tu evento?"
+                    android:inputType="text"
+                    android:textColorHint="@color/colorPrimaryDark" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="20"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_weight="40"
+                    android:background="@drawable/degradado1"
+                    android:onClick="guardaEvento"
+                    android:text="Hacer Pedido"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <Button
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:layout_weight="40"
+                    android:background="@drawable/degradado1"
+                    android:onClick="guardaEvento"
+                    android:text="Agregar loza"
+                    android:textColor="@color/colorPrimaryDark" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

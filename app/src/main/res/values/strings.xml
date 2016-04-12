@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Candy \n Reception</string>
+    <string name="action_inicio">Inicio</string>
+    <string name="action_reservaciones">Reservaciones</string>
+    <string name="action_promociones">Promociones</string>
+    <string name="action_nosotros">Nosotros</string>
+    <string name="action_contacto">Contacto</string>
+    <string name="action_salir">Salir</string>
+
+    <string name="select_date">Selecciona la fecha para el día de tu evento:</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_salon">Contamos con amplias instalaciones,\n grandes paquetes y
+        promociones\n para armar tu fiesta en grande\n y el mejor servicio.</string>
+
+    <string name="hacer_pedido">Pedir mesas y accesorios</string>
+    <string name="apartar_salon">Apartar Salón</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+
+    <string name="alert1">La fecha se encuentra disponible</string>
+    <string name="alert2">El salón ha sido apartado con éxito</string>
+
+    <string-array name="loza">
+        <item>Cuchara sopera</item>
+        <item>Cuchara pastelera</item>
+        <item>Tenedor</item>
+        <item>Cuchillo</item>
+        <item>Plato extendido gde</item>
+        <item>Plato extendido chico</item>
+        <item>Plato pastelero</item>
+        <item>Plato hondo</item>
+        <item>Servilleta de tela</item>
+        <item>Servilletero</item>
+        <item>Salero</item>
+        <item>Hielera c/pinzas</item>
+        <item>Tortillero</item>
+        <item>Vaso de cristal</item>
+        <item>Copa de agua</item>
+        <item>Copa de vino</item>
+    </string-array>
+
+    <string-array name="colores">
+        <item>Rojo</item>
+        <item>Amarillo</item>
+        <item>Morado</item>
+        <item>Negro</item>
+        <item>Café</item>
+        <item>Plateado</item>
+        <item>Dorado</item>
+        <item>Nude</item>
+        <item>Rosa</item>
+        <item>Azul Marino</item>
+        <item>Azul Celeste</item>
+        <item>Verde</item>
+        <item>Anaranjado</item>
+        <item>Vino</item>
+    </string-array>
+</resources>
