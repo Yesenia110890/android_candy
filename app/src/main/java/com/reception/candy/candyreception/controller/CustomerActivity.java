@@ -47,7 +47,6 @@ public class CustomerActivity extends AppCompatActivity {
     @Bind(R.id.edt_email)
     EditText edtEmail;
 
-    private String owner;
     private String msjValida = Constant.MSJ_VALIDA;
 
     @Override
@@ -114,7 +113,7 @@ public class CustomerActivity extends AppCompatActivity {
         pbCustom.setVisibility(View.GONE);
     }
 
-    public void Envia(View v) {
+    public void envia(View v) {
 
         if(validate()) {
             saveCustomer();
@@ -122,6 +121,12 @@ public class CustomerActivity extends AppCompatActivity {
             Toast.makeText(this, msjValida, Toast.LENGTH_SHORT).show();
             msjValida = Constant.MSJ_VALIDA;
         }
+    }
+
+    public void cancela(View v) {
+        finish();
+        startActivity(new Intent(CustomerActivity.this, MainActivity.class));
+
     }
 
     public boolean validate(){
@@ -232,11 +237,12 @@ public class CustomerActivity extends AppCompatActivity {
 
                 if ( joLoadSave.getString("status").equals("201") ) {
 
-                    Toast.makeText(CustomerActivity.this, joLoadSave.toString(), Toast.LENGTH_LONG)
-                            .show();
                     JSONObject joCustomer = joLoadSave.getJSONObject("customer");
 
-                    owner = joCustomer.getString("_id");
+                    String owner = joCustomer.getString("_id");
+                    Intent i = new Intent(CustomerActivity.this, ReservacionesActivity.class);
+                    i.putExtra("owner", owner);
+                    startActivity(i);
 
                     Log.e("Response: ", response);
 
@@ -249,6 +255,11 @@ public class CustomerActivity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Log.e("ERROOOOOOOR ", "FALLAAAAAAA 4");
+                generalMessage = "No se pudo establecer conexión con el servidor " +
+                        "\n intente más tarde";
+                Toast.makeText(CustomerActivity.this, generalMessage, Toast.LENGTH_LONG)
+                        .show();
+                startActivity(new Intent(CustomerActivity.this, MainActivity.class));
                 e.printStackTrace();
             }
 

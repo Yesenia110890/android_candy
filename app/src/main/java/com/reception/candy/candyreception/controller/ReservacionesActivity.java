@@ -11,9 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.reception.candy.candyreception.R;
 import com.reception.candy.candyreception.util.URLS;
 import com.reception.candy.candyreception.util.Util;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -29,6 +33,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -36,14 +43,32 @@ public class ReservacionesActivity extends AppCompatActivity {
 
     @Bind(R.id.pb_Reserv)
     RelativeLayout pbReserv;
-
+    @Bind(R.id.edt_disponibilidad)
     TextView tvDisponibilidad;
+    @Bind(R.id.lly_articulos)
     LinearLayout llyArticulos;
+    @Bind(R.id.lly_date_picker)
     LinearLayout llyDatePicker;
+    @Bind(R.id.event_date)
     DatePicker eventDate;
-    private String eventDateReserved;
-    private String owner;
+    @Bind(R.id.cant_mesas)
+    EditText cantMesas;
+    @Bind(R.id.chx_manteles)
+    CheckBox chxManteles;
+    @Bind(R.id.chx_faldones)
+    CheckBox chxFaldones;
+    @Bind(R.id.chx_monos)
+    CheckBox chxMonos;
+    @Bind(R.id.spn_color)
+    Spinner spnColor;
+    @Bind(R.id.edt_description)
+    EditText edtDescription;
 
+
+    String eventDateReserved;
+    String owner;
+    String description = "";
+    List<String> productos = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,18 +131,19 @@ public class ReservacionesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         pbReserv.setVisibility(View.GONE);
-    }
 
-    public void Cancela(View v) {
-        finish();
-        startActivity(new Intent(ReservacionesActivity.this, MainActivity.class));
-
+        Bundle bundle = getIntent().getExtras();
+        //owner = bundle.getString("owner");
     }
 
     public void guardaEvento(){
         saveEvent();
     }
 
+    public void irALoza(){
+        Intent i = new Intent(ReservacionesActivity.this, LozaActivity.class);
+        startActivity(i);
+    }
 
     public void ConsultaDisponibilidad(View v){
         createEvent();
@@ -125,10 +151,6 @@ public class ReservacionesActivity extends AppCompatActivity {
 
     private void createEvent(){
         String disponible = "Disponible";
-        tvDisponibilidad = (TextView) findViewById(R.id.edt_disponibilidad);
-        llyArticulos = (LinearLayout) findViewById(R.id.lly_articulos);
-        eventDate = (DatePicker) findViewById(R.id.event_date);
-        llyDatePicker = (LinearLayout) findViewById(R.id.lly_date_picker);
         eventDateReserved = eventDate.getYear() + "." +
                 (eventDate.getMonth() + 1) + "." + eventDate.getDayOfMonth();
 
@@ -150,10 +172,15 @@ public class ReservacionesActivity extends AppCompatActivity {
     public void saveEvent() {
 
         JSONObject jsonEvent = new JSONObject();
+        description = edtDescription.getText().toString().trim();
+        owner = "570ce9f48f3afc7a1664582c";
+        JSONArray jsonProductos = new JSONArray(productos);
 
         try {
             jsonEvent.put("event_date", eventDateReserved);
             jsonEvent.put("owner", owner);
+            jsonEvent.put("description", description);
+            jsonEvent.put("products", jsonProductos);
 
             Log.e("Event : ", jsonEvent.toString());
         } catch (JSONException e) {
@@ -214,8 +241,7 @@ public class ReservacionesActivity extends AppCompatActivity {
 
                 if ( joLoadSave.getString("status").equals("201") ) {
 
-                    Toast.makeText(ReservacionesActivity.this, joLoadSave.toString(), Toast.LENGTH_LONG)
-                            .show();
+                    alertSaveEvent();
 
                     Log.e("Response: ", response);
 
