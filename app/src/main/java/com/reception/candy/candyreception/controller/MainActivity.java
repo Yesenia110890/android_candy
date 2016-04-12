@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_reservaciones:
                 finish();
-                startActivity(new Intent(this, ReservacionesActivity.class));
+                startActivity(new Intent(this, CustomerActivity.class));
                 break;
 
             case R.id.action_promociones:

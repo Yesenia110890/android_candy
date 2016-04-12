@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.reception.candy.candyreception.R;
+import com.reception.candy.candyreception.util.Constant;
 import com.reception.candy.candyreception.util.URLS;
 import com.reception.candy.candyreception.util.Util;
 
@@ -51,8 +53,8 @@ public class ReservacionesActivity extends AppCompatActivity {
     LinearLayout llyDatePicker;
     @Bind(R.id.event_date)
     DatePicker eventDate;
-    @Bind(R.id.cant_mesas)
-    EditText cantMesas;
+    @Bind(R.id.edt_cant_mesas)
+    EditText edtCantMesas;
     @Bind(R.id.chx_manteles)
     CheckBox chxManteles;
     @Bind(R.id.chx_faldones)
@@ -64,11 +66,13 @@ public class ReservacionesActivity extends AppCompatActivity {
     @Bind(R.id.edt_description)
     EditText edtDescription;
 
+    private String msjValida = Constant.MSJ_VALIDA;
 
     String eventDateReserved;
     String owner;
     String description = "";
     List<String> productos = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,29 +131,45 @@ public class ReservacionesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void initPropierties(){
+    public void initPropierties() {
         ButterKnife.bind(this);
 
         pbReserv.setVisibility(View.GONE);
 
         Bundle bundle = getIntent().getExtras();
-        //owner = bundle.getString("owner");
+        owner = bundle.getString("owner");
+
+        String[] colors = getResources().getStringArray(R.array.colores);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item,
+                colors);
+        spnColor.setAdapter(adapter);
     }
 
-    public void guardaEvento(){
-        saveEvent();
+    public void guardaEvento(View v) {
+        if (validEvent()) {
+            saveEvent();
+        } else {
+            Toast.makeText(this, msjValida, Toast.LENGTH_SHORT).show();
+            msjValida = Constant.MSJ_VALIDA;
+        }
     }
 
-    public void irALoza(){
+    public void irALoza(View v) {
+        validEvent();
         Intent i = new Intent(ReservacionesActivity.this, LozaActivity.class);
+        i.putStringArrayListExtra("products", (ArrayList<String>) productos);
+        i.putExtra("owner", owner);
+        i.putExtra("eventDate", eventDateReserved);
+        i.putExtra("description", description);
         startActivity(i);
+        finish();
     }
 
-    public void ConsultaDisponibilidad(View v){
+    public void ConsultaDisponibilidad(View v) {
         createEvent();
     }
 
-    private void createEvent(){
+    private void createEvent() {
         String disponible = "Disponible";
         eventDateReserved = eventDate.getYear() + "." +
                 (eventDate.getMonth() + 1) + "." + eventDate.getDayOfMonth();
@@ -163,17 +183,42 @@ public class ReservacionesActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        startActivity(new Intent(ReservacionesActivity.this, MainActivity.class));
-        super.onBackPressed();
+        //super.onBackPressed();
+    }
+
+    public boolean validEvent() {
+        Boolean productsList = true;
+        if (llyArticulos.getVisibility() == View.VISIBLE) {
+
+            description = edtDescription.getText().toString().trim();
+
+            if (edtCantMesas.getText().toString().trim().equals("")) {
+                msjValida = msjValida + "\n" + "* Cantidad \n de mesas";
+                productsList = false;
+            } else {
+                int cantMesas = Integer.parseInt(edtCantMesas.getText().toString().trim());
+                productos.add("MESAS : " + cantMesas);
+
+                if (chxManteles.isChecked()) {
+                    productos.add("MANTELES : " + cantMesas);
+                }
+                if (chxFaldones.isChecked()) {
+                    productos.add("FALDONES : " + (cantMesas * 10));
+                }
+                if (chxMonos.isChecked()) {
+                    String colorMoño = spnColor.getSelectedItem().toString();
+                    productos.add("MOÑOS : " + (cantMesas * 10) + " " + colorMoño);
+                }
+            }
+        }
+
+        return productsList;
     }
 
     /* Web Service save the event.*/
     public void saveEvent() {
 
         JSONObject jsonEvent = new JSONObject();
-        description = edtDescription.getText().toString().trim();
-        owner = "570ce9f48f3afc7a1664582c";
         JSONArray jsonProductos = new JSONArray(productos);
 
         try {
@@ -188,10 +233,10 @@ public class ReservacionesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        new LoadEvent(URLS.SAVE_EVENT, jsonEvent).execute();
+        new SaveEvent(URLS.SAVE_EVENT, jsonEvent).execute();
     }
 
-    private class LoadEvent extends AsyncTask<Void, Void, String> {
+    private class SaveEvent extends AsyncTask<Void, Void, String> {
 
 
         private String saveUrl;
@@ -200,7 +245,7 @@ public class ReservacionesActivity extends AppCompatActivity {
         private String result;
         private JSONObject cjsonObject;
 
-        public LoadEvent(String url, JSONObject jsonObject) {
+        public SaveEvent(String url, JSONObject jsonObject) {
             saveUrl = url;
             cjsonObject = jsonObject;
             Log.e(saveUrl, "");
@@ -239,7 +284,7 @@ public class ReservacionesActivity extends AppCompatActivity {
             try {
                 JSONObject joLoadSave = new JSONObject(result);
 
-                if ( joLoadSave.getString("status").equals("201") ) {
+                if (joLoadSave.getString("status").equals("201")) {
 
                     alertSaveEvent();
 
@@ -277,7 +322,12 @@ public class ReservacionesActivity extends AppCompatActivity {
                 })
                 .setNeutralButton(getResources().getString(R.string.apartar_salon), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        saveEvent();
+                        if (validEvent()) {
+                            saveEvent();
+                        } else {
+                            Toast.makeText(ReservacionesActivity.this, msjValida, Toast.LENGTH_SHORT).show();
+                            msjValida = Constant.MSJ_VALIDA;
+                        }
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancelar), new DialogInterface.OnClickListener() {

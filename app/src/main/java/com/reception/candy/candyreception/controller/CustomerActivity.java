@@ -113,6 +113,13 @@ public class CustomerActivity extends AppCompatActivity {
         pbCustom.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(CustomerActivity.this, MainActivity.class));
+        finish();
+    }
+
     public void envia(View v) {
 
         if(validate()) {
@@ -124,8 +131,8 @@ public class CustomerActivity extends AppCompatActivity {
     }
 
     public void cancela(View v) {
-        finish();
         startActivity(new Intent(CustomerActivity.this, MainActivity.class));
+        finish();
 
     }
 

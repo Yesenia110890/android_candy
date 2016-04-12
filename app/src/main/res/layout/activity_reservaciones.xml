@@ -159,7 +159,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/cant_mesas"
+                        android:id="@+id/edt_cant_mesas"
                         android:layout_width="0sp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20sp"
@@ -219,7 +219,7 @@
                             android:layout_height="0sp"
                             android:layout_weight="40"
                             android:textSize="20sp"
-                            android:text="Faldones"
+                            android:text="Faldones de sillas"
                             android:textColor="@color/colorPrimaryDark" />
 
                         <LinearLayout
@@ -240,7 +240,7 @@
                             <Spinner
                                 android:id="@+id/spn_color"
                                 android:layout_width="0sp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="50sp"
                                 android:layout_weight="20"
                                 android:textSize="20sp"

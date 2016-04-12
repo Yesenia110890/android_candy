@@ -30,25 +30,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_weight="10"
-            android:orientation="horizontal">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/description_loza"
-                android:textSize="25sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:layout_height="0sp"
+                android:layout_weight="10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description_loza"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:textSize="25sp" />
 
             </LinearLayout>
 
@@ -57,43 +59,49 @@
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
-            <CheckBox
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:textSize="20sp"
-                android:text="Cuchara sopera"
-                android:textColor="@color/colorPrimaryDark" />
 
-            <CheckBox
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="50"
-                android:textSize="20sp"
-                android:text="Cuchara pastelera"
-                android:textColor="@color/colorPrimaryDark" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="10"
-                android:orientation="horizontal">
                 <CheckBox
+                    android:id="@+id/chx_cuch_sopera"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:textSize="20sp"
+                    android:text="Cuchara sopera"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <CheckBox
+                    android:id="@+id/chx_cuch_pastel"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="Cuchara pastelera"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="10"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chx_tenedor"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
                     android:text="Tenedor"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <CheckBox
+                    android:id="@+id/chx_cuchillo"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Cuchillo"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,21 +109,24 @@
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
+
                 <CheckBox
+                    android:id="@+id/chx_plato_ext_gde"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Plato extendido gde"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <CheckBox
+                    android:id="@+id/chx_plato_ext_chico"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Plato extendido chico"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -123,21 +134,24 @@
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
+
                 <CheckBox
+                    android:id="@+id/chx_plato_pastel"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Plato pastelero"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <CheckBox
+                    android:id="@+id/chx_plato_hondo"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Plato hondo"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -145,21 +159,24 @@
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
+
                 <CheckBox
+                    android:id="@+id/chx_servilleta"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Servilleta de tela"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <CheckBox
+                    android:id="@+id/chx_salero"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Salero"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -167,55 +184,76 @@
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
+
                 <CheckBox
+                    android:id="@+id/chx_hielera"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Hielera c/pinzas"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <CheckBox
+                    android:id="@+id/chx_tortillero"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Tortillero"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
+
                 <CheckBox
+                    android:id="@+id/chx_copa_agua"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Copa de agua"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
                 <CheckBox
+                    android:id="@+id/chx_copa_vino"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="50"
-                    android:textSize="20sp"
                     android:text="Copa de vino"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="10"
                 android:orientation="horizontal">
+
                 <CheckBox
+                    android:id="@+id/chx_vaso"
                     android:layout_width="0sp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:textSize="20sp"
-                    android:text="Vaso de cristal"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="50"
+                    android:text="Vaso de cristal"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30sp"
+                    android:background="@drawable/degradado1"
+                    android:onClick="guardarEvento"
+                    android:text="Guardar Reservación"
                     android:textColor="@color/colorPrimaryDark" />
 
             </LinearLayout>
