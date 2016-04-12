@@ -8,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
@@ -74,6 +72,7 @@ public class LozaActivity extends AppCompatActivity {
     String owner;
     String description = "";
     List<String> productos = new ArrayList<>();
+    int cantMesas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,56 +80,6 @@ public class LozaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loza);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initPropierties();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //noinspection SimplifiableIfStatement
-        switch (item.getItemId()) {
-
-            case R.id.action_inicio:
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-
-            case R.id.action_promociones:
-                finish();
-                startActivity(new Intent(this, PromocionesActivity.class));
-                break;
-
-            case R.id.action_nosotros:
-                finish();
-                startActivity(new Intent(this, NosotrosActivity.class));
-                break;
-
-            case R.id.action_contacto:
-                finish();
-                startActivity(new Intent(this, ContactoActivity.class));
-                break;
-
-            case R.id.action_salir:
-                Intent i = new Intent(getBaseContext(), CustomerActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(i);
-                finish();
-                break;
-
-            default:
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void initPropierties() {
@@ -142,7 +91,56 @@ public class LozaActivity extends AppCompatActivity {
         owner = bundle.getString("owner");
         description = bundle.getString("description");
         eventDateReserved = bundle.getString("eventDate");
+        cantMesas = bundle.getInt("cantMesas");
         productos = getIntent().getStringArrayListExtra("products");
+    }
+
+    private void products(){
+        if (chxCuchSopera.isChecked()) {
+            productos.add("CUCHARAS SOPERAS : " + (cantMesas * 10));
+        }
+        if (chxCuchPastelera.isChecked()) {
+            productos.add("CUCHARAS PASTELERAS : " + (cantMesas * 10));
+        }
+        if (chxTenedor.isChecked()) {
+            productos.add("TENEDORES : " + (cantMesas * 10));
+        }
+        if (chxCuchillo.isChecked()) {
+            productos.add("CUCHILLOS : " + (cantMesas * 10));
+        }
+        if (chxPlatoExtGde.isChecked()) {
+            productos.add("PLATOS EXTENDIDOS GDES : " + (cantMesas * 10));
+        }
+        if (chxPlatoExtChico.isChecked()) {
+            productos.add("PLATOS EXTENDIDOS CHICOS : " + (cantMesas * 10));
+        }
+        if (chxPlatoPastelero.isChecked()) {
+            productos.add("PLATOS PASTELEROS : " + (cantMesas * 10));
+        }
+        if (chxPlatoHondo.isChecked()) {
+            productos.add("PLATOS HONDOS : " + (cantMesas * 10));
+        }
+        if (chxServilleta.isChecked()) {
+            productos.add("SERVILLETAS : " + (cantMesas * 10));
+        }
+        if (chxSalero.isChecked()) {
+            productos.add("SALEROS : " + (cantMesas * 2));
+        }
+        if (chxHielera.isChecked()) {
+            productos.add("HIELERAS : " + cantMesas);
+        }
+        if (chxTortillero.isChecked()) {
+            productos.add("TORTILLEROS : " + (cantMesas * 2));
+        }
+        if (chxCopaAgua.isChecked()) {
+            productos.add("COPAS AGUA : " + (cantMesas * 10));
+        }
+        if (chxCopaVino.isChecked()) {
+            productos.add("COPAS VINO : " + (cantMesas * 10));
+        }
+        if (chxVasoCristal.isChecked()) {
+            productos.add("VASOS : " + (cantMesas * 10));
+        }
     }
 
     public void guardarEvento(View v){
@@ -151,7 +149,7 @@ public class LozaActivity extends AppCompatActivity {
 
     /* Web Service save the event.*/
     public void saveEvent() {
-
+        products();
         JSONObject jsonEvent = new JSONObject();
         JSONArray jsonProductos = new JSONArray(productos);
 

@@ -2,7 +2,8 @@ package com.reception.candy.candyreception.controller;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Bundle;
+import android.os.*;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -58,10 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_salir:
-                Intent i = new Intent(getBaseContext(), MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(i);
-                finish();
+                android.os.Process.killProcess(Process.myPid());
                 break;
 
             default:
@@ -69,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Process.killProcess(Process.myPid());
     }
 }

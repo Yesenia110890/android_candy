@@ -8,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -72,6 +70,7 @@ public class ReservacionesActivity extends AppCompatActivity {
     String owner;
     String description = "";
     List<String> productos = new ArrayList<>();
+    int cantMesas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,56 +78,6 @@ public class ReservacionesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservaciones);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initPropierties();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //noinspection SimplifiableIfStatement
-        switch (item.getItemId()) {
-
-            case R.id.action_inicio:
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-
-            case R.id.action_promociones:
-                finish();
-                startActivity(new Intent(this, PromocionesActivity.class));
-                break;
-
-            case R.id.action_nosotros:
-                finish();
-                startActivity(new Intent(this, NosotrosActivity.class));
-                break;
-
-            case R.id.action_contacto:
-                finish();
-                startActivity(new Intent(this, ContactoActivity.class));
-                break;
-
-            case R.id.action_salir:
-                Intent i = new Intent(getBaseContext(), ReservacionesActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(i);
-                finish();
-                break;
-
-            default:
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void initPropierties() {
@@ -155,14 +104,19 @@ public class ReservacionesActivity extends AppCompatActivity {
     }
 
     public void irALoza(View v) {
-        validEvent();
-        Intent i = new Intent(ReservacionesActivity.this, LozaActivity.class);
-        i.putStringArrayListExtra("products", (ArrayList<String>) productos);
-        i.putExtra("owner", owner);
-        i.putExtra("eventDate", eventDateReserved);
-        i.putExtra("description", description);
-        startActivity(i);
-        finish();
+        if (validEvent()) {0
+            Intent i = new Intent(ReservacionesActivity.this, LozaActivity.class);
+            i.putStringArrayListExtra("products", (ArrayList<String>) productos);
+            i.putExtra("cantMesas", cantMesas);
+            i.putExtra("owner", owner);
+            i.putExtra("eventDate", eventDateReserved);
+            i.putExtra("description", description);
+            startActivity(i);
+            finish();
+        } else {
+            Toast.makeText(ReservacionesActivity.this, msjValida, Toast.LENGTH_SHORT).show();
+            msjValida = Constant.MSJ_VALIDA;
+        }
     }
 
     public void ConsultaDisponibilidad(View v) {
@@ -196,7 +150,7 @@ public class ReservacionesActivity extends AppCompatActivity {
                 msjValida = msjValida + "\n" + "* Cantidad \n de mesas";
                 productsList = false;
             } else {
-                int cantMesas = Integer.parseInt(edtCantMesas.getText().toString().trim());
+                cantMesas = Integer.parseInt(edtCantMesas.getText().toString().trim());
                 productos.add("MESAS : " + cantMesas);
 
                 if (chxManteles.isChecked()) {
@@ -207,7 +161,7 @@ public class ReservacionesActivity extends AppCompatActivity {
                 }
                 if (chxMonos.isChecked()) {
                     String colorMoño = spnColor.getSelectedItem().toString();
-                    productos.add("MOÑOS : " + (cantMesas * 10) + " " + colorMoño);
+                    productos.add("MONOS : " + (cantMesas * 10) + " " + colorMoño);
                 }
             }
         }

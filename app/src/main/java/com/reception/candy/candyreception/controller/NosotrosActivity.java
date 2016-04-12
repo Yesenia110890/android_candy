@@ -54,9 +54,8 @@ public class NosotrosActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_salir:
-                Intent i = new Intent(getBaseContext(), NosotrosActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(i);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class).
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
                 break;
 
