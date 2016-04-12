@@ -104,7 +104,7 @@ public class ReservacionesActivity extends AppCompatActivity {
     }
 
     public void irALoza(View v) {
-        if (validEvent()) {0
+        if (validEvent()) {
             Intent i = new Intent(ReservacionesActivity.this, LozaActivity.class);
             i.putStringArrayListExtra("products", (ArrayList<String>) productos);
             i.putExtra("cantMesas", cantMesas);
@@ -279,7 +279,8 @@ public class ReservacionesActivity extends AppCompatActivity {
                         if (validEvent()) {
                             saveEvent();
                         } else {
-                            Toast.makeText(ReservacionesActivity.this, msjValida, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ReservacionesActivity.this, msjValida,
+                                    Toast.LENGTH_SHORT).show();
                             msjValida = Constant.MSJ_VALIDA;
                         }
                     }

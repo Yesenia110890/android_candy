@@ -1,21 +1,41 @@
 package com.reception.candy.candyreception.controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
 import com.reception.candy.candyreception.R;
 
-public class NosotrosActivity extends AppCompatActivity {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class NosotrosActivity extends Activity {
+
+    private ImageSwitcher imageSwitcher;
+
+    private int[] gallery = { R.drawable.log, R.drawable.logo, R.drawable.salon };
+
+    private int position;
+
+    private static final Integer DURATION = 2500;
+
+    private Timer timer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nosotros);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        initProperties();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,6 +84,69 @@ public class NosotrosActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initProperties(){
+        imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+
+            public View makeView() {
+                return new ImageView(NosotrosActivity.this);
+            }
+        });
+
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        imageSwitcher.setInAnimation(fadeIn);
+        imageSwitcher.setOutAnimation(fadeOut);
+        start();
+    }
+
+    public void startSlider() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            public void run() {
+                // avoid exception:
+                // "Only the original thread that created a view hierarchy can touch its views"
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        imageSwitcher.setImageResource(gallery[position]);
+                        position++;
+                        if (position == gallery.length) {
+                            position = 0;
+                        }
+                    }
+                });
+            }
+
+        }, 0, DURATION);
+    }
+
+    public void start() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        position = 0;
+        startSlider();
+    }
+
+    // Stops the slider when the Activity is going into the background
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (timer != null) {
+            startSlider();
+        }
+
     }
 
 }

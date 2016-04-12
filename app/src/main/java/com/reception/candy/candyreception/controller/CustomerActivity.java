@@ -148,6 +148,8 @@ public class CustomerActivity extends AppCompatActivity {
         if (edtEdad.getText().toString().trim().equals("")) {
             msjValida = msjValida + "\n" + "* Edad";
             valid = false;
+        } else if (Integer.valueOf(edtEdad.getText().toString().trim()) < 18) {
+            Toast.makeText(this, "Debes ser mayor de edad", Toast.LENGTH_SHORT).show();
         }
         if (edtDireccion.getText().toString().trim().equals("")) {
             msjValida = msjValida + "\n" + "* Dirección";
