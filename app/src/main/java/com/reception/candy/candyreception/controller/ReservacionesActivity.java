@@ -124,15 +124,10 @@ public class ReservacionesActivity extends AppCompatActivity {
     }
 
     private void createEvent() {
-        String disponible = "Disponible";
         eventDateReserved = eventDate.getYear() + "." +
                 (eventDate.getMonth() + 1) + "." + eventDate.getDayOfMonth();
 
-        tvDisponibilidad.setText(disponible);
-
-        if (tvDisponibilidad.getText() == "Disponible") {
-            alertDisponible();
-        }
+        availabilityEvent();
     }
 
     @Override
@@ -253,6 +248,94 @@ public class ReservacionesActivity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Log.e("ERROOOOOOOR ", "FALLAAAAAAA 4");
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    /* Web Service confirm availability to event.*/
+    public void availabilityEvent() {
+
+        Log.e(URLS.VERIFY_AVAILABILITY.concat(eventDateReserved), "");
+        new AvailabilityEvent(URLS.VERIFY_AVAILABILITY.concat(eventDateReserved)).execute();
+    }
+
+    private class AvailabilityEvent extends AsyncTask<Void, Void, String> {
+
+
+        private String saveUrl;
+        private HttpEntity<String> entity;
+        private RestTemplate restTemplate;
+        private String result;
+
+        public AvailabilityEvent(String url) {
+            saveUrl = url;
+            Log.e(saveUrl, "");
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            pbReserv.setVisibility(View.VISIBLE);
+
+            entity = new HttpEntity<>( Util.getRequestHeaders());
+            restTemplate = new RestTemplate(Util.clientHttpRequestFactory());
+            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+
+                ResponseEntity<String> response = restTemplate.exchange(saveUrl, HttpMethod.GET,
+                        entity, String.class);
+                return String.valueOf(response);
+            } catch (Exception rae) {
+
+                rae.printStackTrace();
+                return rae.toString();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+
+            String generalMessage;
+            pbReserv.setVisibility(View.GONE);
+            this.result = response;
+            try {
+                JSONObject joLoadSave = new JSONObject(result);
+
+                String availability = "";
+
+                if (!joLoadSave.getString("status").equals("500")) {
+
+                    if (joLoadSave.getString("status").equals("200")) {
+                        availability = joLoadSave.getString("detail");
+                    } else if(joLoadSave.getString("status").equals("404")){
+                        availability = joLoadSave.getJSONObject("error").getString("detail");
+                    }
+
+                    tvDisponibilidad.setText(availability);
+
+                    if (tvDisponibilidad.getText() == "Disponible") {
+                        alertDisponible();
+                    } else {
+                        Toast.makeText(ReservacionesActivity.this, Constant.FECHA_DISPONIBLE,
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+
+                } else {
+                    pbReserv.setVisibility(View.GONE);
+                    JSONObject Response = new JSONObject(result);
+                    generalMessage = Response.getString("status");
+                    Toast.makeText(ReservacionesActivity.this, generalMessage, Toast.LENGTH_LONG)
+                            .show();
+                }
+            } catch (JSONException e) {
+                Log.e("ERROOOOOOOR AVAILABLE", "FALLAAAAAAA 4");
                 e.printStackTrace();
             }
 

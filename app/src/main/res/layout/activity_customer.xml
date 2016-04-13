@@ -124,7 +124,7 @@
                     android:layout_height="0sp"
                     android:layout_weight="10"
                     android:hint="E-mail"
-                    android:maxLength="25"
+                    android:maxLength="30"
                     android:textColor="@color/colorAccent"
                     android:inputType="textWebEmailAddress"
                     android:backgroundTint="@color/colorPrimaryDark"

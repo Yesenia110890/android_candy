@@ -150,6 +150,7 @@ public class CustomerActivity extends AppCompatActivity {
             valid = false;
         } else if (Integer.valueOf(edtEdad.getText().toString().trim()) < 18) {
             Toast.makeText(this, "Debes ser mayor de edad", Toast.LENGTH_SHORT).show();
+            valid = false;
         }
         if (edtDireccion.getText().toString().trim().equals("")) {
             msjValida = msjValida + "\n" + "* Dirección";
