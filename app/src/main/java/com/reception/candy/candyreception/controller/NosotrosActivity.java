@@ -1,9 +1,9 @@
 package com.reception.candy.candyreception.controller;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,15 +18,15 @@ import com.reception.candy.candyreception.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class NosotrosActivity extends Activity {
+public class NosotrosActivity extends AppCompatActivity {
 
     private ImageSwitcher imageSwitcher;
 
-    private int[] gallery = { R.drawable.log, R.drawable.logo, R.drawable.salon };
+    private int[] gallery = { R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.salon };
 
     private int position;
 
-    private static final Integer DURATION = 2500;
+    private static final Integer DURATION = 3000;
 
     private Timer timer = null;
 

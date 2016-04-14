@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -19,7 +21,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.reception.candy.candyreception.R;
+import com.reception.candy.candyreception.singletons.VolleyS;
 import com.reception.candy.candyreception.util.Constant;
 import com.reception.candy.candyreception.util.URLS;
 import com.reception.candy.candyreception.util.Util;
@@ -33,6 +42,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,8 +79,12 @@ public class ReservacionesActivity extends AppCompatActivity {
     String eventDateReserved;
     String owner;
     String description = "";
+    String generalMessage;
     List<String> productos = new ArrayList<>();
     int cantMesas;
+
+    private VolleyS volley;
+    protected RequestQueue fRequestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +94,45 @@ public class ReservacionesActivity extends AppCompatActivity {
         initPropierties();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        //noinspection SimplifiableIfStatement
+        switch (item.getItemId()){
+
+            case R.id.action_inicio:
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+
+            case R.id.action_salir:
+                startActivity(new Intent(getApplicationContext(), MainActivity.class).
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                finish();
+                break;
+
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public void initPropierties() {
         ButterKnife.bind(this);
+
+        volley = VolleyS.getInstance(this.getApplicationContext());
+        fRequestQueue = volley.getRequestQueue();
 
         pbReserv.setVisibility(View.GONE);
 
@@ -92,6 +143,27 @@ public class ReservacionesActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item,
                 colors);
         spnColor.setAdapter(adapter);
+    }
+
+    public void addToQueue(Request request) {
+        if (request != null) {
+            request.setTag(this);
+            if (fRequestQueue == null)
+                fRequestQueue = volley.getRequestQueue();
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    60000, 3, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            onPreStartConnection();
+            fRequestQueue.add(request);
+        }
+    }
+
+    public void onPreStartConnection() {
+        this.setProgressBarIndeterminateVisibility(true);
+    }
+
+    public void onConnectionFinished() {
+        this.setProgressBarIndeterminateVisibility(false);
     }
 
     public void guardaEvento(View v) {
@@ -227,7 +299,6 @@ public class ReservacionesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
 
-            String generalMessage;
             pbReserv.setVisibility(View.GONE);
             this.result = response;
             try {
@@ -256,90 +327,34 @@ public class ReservacionesActivity extends AppCompatActivity {
 
     /* Web Service confirm availability to event.*/
     public void availabilityEvent() {
+        String url = URLS.VERIFY_AVAILABILITY.concat(eventDateReserved);
+        final JsonObjectRequest request = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
 
-        Log.e(URLS.VERIFY_AVAILABILITY.concat(eventDateReserved), "");
-        new AvailabilityEvent(URLS.VERIFY_AVAILABILITY.concat(eventDateReserved)).execute();
-    }
-
-    private class AvailabilityEvent extends AsyncTask<Void, Void, String> {
-
-
-        private String saveUrl;
-        private HttpEntity<String> entity;
-        private RestTemplate restTemplate;
-        private String result;
-
-        public AvailabilityEvent(String url) {
-            saveUrl = url;
-            Log.e(saveUrl, "");
-        }
-
-        @Override
-        protected void onPreExecute() {
-
-            pbReserv.setVisibility(View.VISIBLE);
-
-            entity = new HttpEntity<>( Util.getRequestHeaders());
-            restTemplate = new RestTemplate(Util.clientHttpRequestFactory());
-            restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-
-                ResponseEntity<String> response = restTemplate.exchange(saveUrl, HttpMethod.GET,
-                        entity, String.class);
-                return String.valueOf(response);
-            } catch (Exception rae) {
-
-                rae.printStackTrace();
-                return rae.toString();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-
-            String generalMessage;
-            pbReserv.setVisibility(View.GONE);
-            this.result = response;
-            try {
-                JSONObject joLoadSave = new JSONObject(result);
-
-                String availability = "";
-
-                if (!joLoadSave.getString("status").equals("500")) {
-
-                    if (joLoadSave.getString("status").equals("200")) {
-                        availability = joLoadSave.getString("detail");
-                    } else if(joLoadSave.getString("status").equals("404")){
-                        availability = joLoadSave.getJSONObject("error").getString("detail");
-                    }
-
-                    tvDisponibilidad.setText(availability);
-
-                    if (tvDisponibilidad.getText() == "Disponible") {
-                        alertDisponible();
-                    } else {
-                        Toast.makeText(ReservacionesActivity.this, Constant.FECHA_DISPONIBLE,
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-
-                } else {
-                    pbReserv.setVisibility(View.GONE);
-                    JSONObject Response = new JSONObject(result);
-                    generalMessage = Response.getString("status");
-                    Toast.makeText(ReservacionesActivity.this, generalMessage, Toast.LENGTH_LONG)
-                            .show();
+                try {
+                    tvDisponibilidad.setText(jsonObject.getString("detail"));
+                    alertDisponible();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                Log.e("ERROOOOOOOR AVAILABLE", "FALLAAAAAAA 4");
-                e.printStackTrace();
+                onConnectionFinished();
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                try {
+                    String responseBody = new String( volleyError.networkResponse.data, "utf-8" );
+                    JSONObject jsonObject = new JSONObject( responseBody );
+                    tvDisponibilidad.setText(jsonObject.getJSONObject("error").getString("detail"));
+                } catch ( JSONException e ) {
+                    //Handle a malformed json response
+                } catch (UnsupportedEncodingException error){
 
-        }
+                }
+            }
+        });
+        addToQueue(request);
     }
 
     /**
@@ -370,6 +385,7 @@ public class ReservacionesActivity extends AppCompatActivity {
                 })
                 .setNegativeButton(getResources().getString(R.string.cancelar), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        tvDisponibilidad.setText("");
                         dialog.cancel();
                     }
                 }).show();

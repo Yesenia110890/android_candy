@@ -45,7 +45,7 @@
             android:name=".controller.ContactoActivity"
             android:label="Contáctanos!!!" />
         <activity android:name=".controller.CustomerActivity" />
-        <activity android:name=".controller.LozaActivity"></activity>
+        <activity android:name=".controller.LozaActivity"/>
     </application>
 
 </manifest>
