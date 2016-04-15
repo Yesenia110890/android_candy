@@ -18,11 +18,6 @@
         android:title="@string/action_promociones"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_nosotros"
-        android:orderInCategory="100"
-        android:title="@string/action_nosotros"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_contacto"
         android:orderInCategory="100"
         android:title="@string/action_contacto"

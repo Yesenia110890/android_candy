@@ -78,14 +78,13 @@ public class CustomerActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
                 break;
 
+            case R.id.action_reservaciones:
+
+                break;
+
             case R.id.action_promociones:
                 finish();
                 startActivity(new Intent(this, PromocionesActivity.class));
-                break;
-
-            case R.id.action_nosotros:
-                finish();
-                startActivity(new Intent(this, NosotrosActivity.class));
                 break;
 
             case R.id.action_contacto:

@@ -108,11 +108,23 @@ public class ReservacionesActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         //noinspection SimplifiableIfStatement
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.action_inicio:
                 finish();
                 startActivity(new Intent(this, MainActivity.class));
+                break;
+
+            case R.id.action_reservaciones:
+
+                break;
+
+            case R.id.action_promociones:
+
+                break;
+
+            case R.id.action_contacto:
+
                 break;
 
             case R.id.action_salir:
@@ -344,12 +356,12 @@ public class ReservacionesActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 try {
-                    String responseBody = new String( volleyError.networkResponse.data, "utf-8" );
-                    JSONObject jsonObject = new JSONObject( responseBody );
+                    String responseBody = new String(volleyError.networkResponse.data, "utf-8");
+                    JSONObject jsonObject = new JSONObject(responseBody);
                     tvDisponibilidad.setText(jsonObject.getJSONObject("error").getString("detail"));
-                } catch ( JSONException e ) {
+                } catch (JSONException e) {
                     //Handle a malformed json response
-                } catch (UnsupportedEncodingException error){
+                } catch (UnsupportedEncodingException error) {
 
                 }
             }

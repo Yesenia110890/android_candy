@@ -43,9 +43,9 @@ public class PromocionesActivity extends AppCompatActivity {
                 startActivity(new Intent(this, CustomerActivity.class));
                 break;
 
-            case R.id.action_nosotros:
+            case R.id.action_promociones:
                 finish();
-                startActivity(new Intent(this, NosotrosActivity.class));
+                startActivity(new Intent(this, PromocionesActivity.class));
                 break;
 
             case R.id.action_contacto:

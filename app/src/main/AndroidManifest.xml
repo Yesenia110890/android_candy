@@ -39,9 +39,6 @@
             android:name=".controller.PromocionesActivity"
             android:label="Grandes Promociones!!!" />
         <activity
-            android:name=".controller.NosotrosActivity"
-            android:label="Conócenos!!!" />
-        <activity
             android:name=".controller.ContactoActivity"
             android:label="Contáctanos!!!" />
         <activity android:name=".controller.CustomerActivity" />

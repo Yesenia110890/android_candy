@@ -6,16 +6,36 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
 import com.reception.candy.candyreception.R;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ContactoActivity extends AppCompatActivity {
+
+    private ImageSwitcher imageSwitcher;
+
+    private int[] gallery = { R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e, R.drawable.salon };
+
+    private int position;
+
+    private static final Integer DURATION = 3000;
+
+    private Timer timer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacto);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        initProperties();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,7 +60,7 @@ public class ContactoActivity extends AppCompatActivity {
 
             case R.id.action_reservaciones:
                 finish();
-                startActivity(new Intent(this, ReservacionesActivity.class));
+                startActivity(new Intent(this, CustomerActivity.class));
                 break;
 
             case R.id.action_promociones:
@@ -48,9 +68,8 @@ public class ContactoActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PromocionesActivity.class));
                 break;
 
-            case R.id.action_nosotros:
-                finish();
-                startActivity(new Intent(this, NosotrosActivity.class));
+            case R.id.action_contacto:
+
                 break;
 
             case R.id.action_salir:
@@ -64,6 +83,69 @@ public class ContactoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initProperties(){
+        imageSwitcher = (ImageSwitcher) findViewById(R.id.imageSwitcher);
+        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+
+            public View makeView() {
+                return new ImageView(ContactoActivity.this);
+            }
+        });
+
+        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        imageSwitcher.setInAnimation(fadeIn);
+        imageSwitcher.setOutAnimation(fadeOut);
+        start();
+    }
+
+    public void startSlider() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            public void run() {
+                // avoid exception:
+                // "Only the original thread that created a view hierarchy can touch its views"
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        imageSwitcher.setImageResource(gallery[position]);
+                        position++;
+                        if (position == gallery.length) {
+                            position = 0;
+                        }
+                    }
+                });
+            }
+
+        }, 0, DURATION);
+    }
+
+    public void start() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        position = 0;
+        startSlider();
+    }
+
+    // Stops the slider when the Activity is going into the background
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (timer != null) {
+            startSlider();
+        }
+
     }
 
 }

@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()){
 
+            case R.id.action_inicio:
+
+                break;
+
             case R.id.action_reservaciones:
                 finish();
                 startActivity(new Intent(this, CustomerActivity.class));
@@ -46,11 +50,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_promociones:
                 finish();
                 startActivity(new Intent(this, PromocionesActivity.class));
-                break;
-
-            case R.id.action_nosotros:
-                finish();
-                startActivity(new Intent(this, NosotrosActivity.class));
                 break;
 
             case R.id.action_contacto:
