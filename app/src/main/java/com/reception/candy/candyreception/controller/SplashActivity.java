@@ -19,13 +19,11 @@ public class SplashActivity extends Activity {
             public void run(){
                 try{
                     sleep(1000);
-
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
                     Intent intent = new Intent(SplashActivity.this,MainActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                     finish();
                 }
             }
@@ -33,4 +31,9 @@ public class SplashActivity extends Activity {
         timerThread.start();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }
